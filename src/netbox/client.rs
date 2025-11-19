@@ -8,6 +8,7 @@ use tracing::{debug, error};
 /// NetBox API Client
 pub struct NetBoxClient {
     base_url: String,
+    #[allow(dead_code)] // Token is used in headers, but field itself is not directly accessed
     token: String,
     client: reqwest::Client,
 }

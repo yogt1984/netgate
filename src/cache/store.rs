@@ -11,6 +11,7 @@ use tracing::{debug, trace};
 struct CacheEntry<T> {
     value: T,
     expires_at: Instant,
+    #[allow(dead_code)] // Reserved for future use (cache age statistics)
     created_at: Instant,
 }
 
@@ -28,6 +29,7 @@ impl<T> CacheEntry<T> {
         Instant::now() > self.expires_at
     }
 
+    #[allow(dead_code)] // Reserved for future use (cache age statistics)
     fn age(&self) -> Duration {
         self.created_at.elapsed()
     }

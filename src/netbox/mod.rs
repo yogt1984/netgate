@@ -5,10 +5,10 @@ pub mod models;
 pub mod resilient_client;
 pub mod tenant_client;
 
-pub use cached_client::*;
-pub use client::*;
-pub use error::*;
+// Re-export commonly used types explicitly (public API)
+pub use client::NetBoxClient;
+pub use resilient_client::ResilientNetBoxClient;
 pub use models::*;
-pub use resilient_client::*;
-pub use tenant_client::*;
+#[allow(unused_imports)] // Public API for external use
+pub use error::NetBoxError;
 
