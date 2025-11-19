@@ -6,4 +6,5 @@ pub mod error;
 pub mod logging;
 pub mod netbox;
 pub mod security;
+pub mod r#virtual;
 

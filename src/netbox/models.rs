@@ -34,6 +34,33 @@ pub struct NetBoxSite {
     pub last_updated: Option<String>,
 }
 
+impl Default for NetBoxSite {
+    fn default() -> Self {
+        Self {
+            id: None,
+            name: String::new(),
+            slug: None,
+            description: None,
+            status: None,
+            region: None,
+            tenant: None,
+            facility: None,
+            physical_address: None,
+            shipping_address: None,
+            latitude: None,
+            longitude: None,
+            contact_name: None,
+            contact_phone: None,
+            contact_email: None,
+            comments: None,
+            tags: None,
+            custom_fields: None,
+            created: None,
+            last_updated: None,
+        }
+    }
+}
+
 /// NetBox Site Status
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -72,6 +99,38 @@ pub struct NetBoxDevice {
     pub custom_fields: Option<serde_json::Value>,
     pub created: Option<String>,
     pub last_updated: Option<String>,
+}
+
+impl Default for NetBoxDevice {
+    fn default() -> Self {
+        Self {
+            id: None,
+            name: None,
+            device_type: None,
+            device_role: None,
+            tenant: None,
+            platform: None,
+            serial: None,
+            asset_tag: None,
+            site: None,
+            location: None,
+            rack: None,
+            position: None,
+            face: None,
+            status: None,
+            primary_ip4: None,
+            primary_ip6: None,
+            cluster: None,
+            virtual_chassis: None,
+            vc_position: None,
+            vc_priority: None,
+            comments: None,
+            tags: None,
+            custom_fields: None,
+            created: None,
+            last_updated: None,
+        }
+    }
 }
 
 /// NetBox Device Face
