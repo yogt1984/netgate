@@ -4,6 +4,7 @@ mod domain;
 mod error;
 mod logging;
 mod netbox;
+mod resilience;
 mod security;
 
 use std::sync::Arc;

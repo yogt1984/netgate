@@ -1,3 +1,4 @@
+use crate::resilience::retry::RetryableError;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -25,6 +26,31 @@ pub enum NetBoxError {
 
     #[error("Unexpected response: {0}")]
     UnexpectedResponse(String),
+}
+
+impl RetryableError for NetBoxError {
+    fn is_retryable(&self) -> bool {
+        match self {
+            // Network errors are retryable
+            NetBoxError::NetworkError(_) => true,
+            // Server errors (5xx) are retryable
+            NetBoxError::ApiError(msg) => {
+                msg.contains("500") || msg.contains("502") || msg.contains("503") || msg.contains("504")
+            }
+            // Authentication errors are not retryable (need to fix credentials)
+            NetBoxError::AuthenticationError(_) => false,
+            // Not found is not retryable
+            NetBoxError::NotFound(_) => false,
+            // Validation errors are not retryable (bad request)
+            NetBoxError::ValidationError(_) => false,
+            // Serialization errors are not retryable
+            NetBoxError::SerializationError(_) => false,
+            // Invalid URL is not retryable
+            NetBoxError::InvalidUrl(_) => false,
+            // Unexpected response might be retryable
+            NetBoxError::UnexpectedResponse(_) => true,
+        }
+    }
 }
 
 impl NetBoxError {

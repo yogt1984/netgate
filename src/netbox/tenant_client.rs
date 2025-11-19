@@ -1,7 +1,7 @@
 use crate::error::AppError;
 use crate::netbox::client::NetBoxClient;
 use crate::netbox::models::*;
-use crate::security::tenant::{TenantAccessControl, TenantId, TenantMappingService, TenantResourceVisibility};
+use crate::security::tenant::{TenantAccessControl, TenantId, TenantResourceVisibility};
 use std::sync::Arc;
 
 /// Tenant-aware NetBox client wrapper
@@ -214,7 +214,7 @@ mod tests {
     use crate::security::tenant::TenantMappingService;
     use serde_json::json;
     use wiremock::{
-        matchers::{header, method, path, query_param},
+        matchers::{method, path, query_param},
         Mock, MockServer, ResponseTemplate,
     };
 
