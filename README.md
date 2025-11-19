@@ -519,8 +519,19 @@ NetGate follows clean architecture principles:
 |----------|---------|-------------|
 | `PORT` | `8080` | Server port |
 | `NETBOX_URL` | `http://localhost:8000` | NetBox API URL |
-| `NETBOX_TOKEN` | (empty) | NetBox API token |
+| `NETBOX_TOKEN` | (empty) | NetBox API token (optional - server can run without it for demo) |
 | `RUST_LOG` | `info` | Logging level |
+
+**Note**: The server can start without `NETBOX_TOKEN` for demonstration purposes. Without a token:
+- Health and metrics endpoints will work (without NetBox connectivity info)
+- Order creation endpoints will fail when trying to create resources in NetBox
+- Other endpoints will function normally
+
+To enable full NetBox integration, set `NETBOX_TOKEN`:
+```bash
+export NETBOX_TOKEN=your-netbox-token
+cargo run
+```
 
 ### Cache Configuration
 
