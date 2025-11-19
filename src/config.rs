@@ -25,6 +25,11 @@ mod tests {
 
     #[test]
     fn test_config_defaults() {
+        // Save original values
+        let orig_port = std::env::var("PORT").ok();
+        let orig_url = std::env::var("NETBOX_URL").ok();
+        let orig_token = std::env::var("NETBOX_TOKEN").ok();
+
         // Clear env vars for this test
         std::env::remove_var("PORT");
         std::env::remove_var("NETBOX_URL");
@@ -35,6 +40,23 @@ mod tests {
         assert_eq!(config.port, 8080);
         assert_eq!(config.netbox_url, "http://localhost:8000");
         assert_eq!(config.netbox_token, "");
+
+        // Restore original values
+        if let Some(val) = orig_port {
+            std::env::set_var("PORT", val);
+        } else {
+            std::env::remove_var("PORT");
+        }
+        if let Some(val) = orig_url {
+            std::env::set_var("NETBOX_URL", val);
+        } else {
+            std::env::remove_var("NETBOX_URL");
+        }
+        if let Some(val) = orig_token {
+            std::env::set_var("NETBOX_TOKEN", val);
+        } else {
+            std::env::remove_var("NETBOX_TOKEN");
+        }
     }
 
     #[test]
@@ -74,6 +96,11 @@ mod tests {
 
     #[test]
     fn test_config_invalid_port() {
+        // Save original values
+        let orig_port = std::env::var("PORT").ok();
+        let orig_url = std::env::var("NETBOX_URL").ok();
+        let orig_token = std::env::var("NETBOX_TOKEN").ok();
+
         std::env::set_var("PORT", "invalid");
         std::env::remove_var("NETBOX_URL");
         std::env::remove_var("NETBOX_TOKEN");
@@ -83,8 +110,22 @@ mod tests {
         // Should fall back to default
         assert_eq!(config.port, 8080);
 
-        // Cleanup
-        std::env::remove_var("PORT");
+        // Restore original values
+        if let Some(val) = orig_port {
+            std::env::set_var("PORT", val);
+        } else {
+            std::env::remove_var("PORT");
+        }
+        if let Some(val) = orig_url {
+            std::env::set_var("NETBOX_URL", val);
+        } else {
+            std::env::remove_var("NETBOX_URL");
+        }
+        if let Some(val) = orig_token {
+            std::env::set_var("NETBOX_TOKEN", val);
+        } else {
+            std::env::remove_var("NETBOX_TOKEN");
+        }
     }
 }
 

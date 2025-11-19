@@ -6,7 +6,7 @@ run:
 
 # Run tests
 test:
-	cargo test
+	cargo test -- --test-threads=1
 
 # Build the project
 build:
