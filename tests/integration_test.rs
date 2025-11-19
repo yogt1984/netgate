@@ -11,7 +11,51 @@ const BASE_URL: &str = "http://localhost:8080";
 async fn test_health_endpoint() {
     let client = reqwest::Client::new();
     let resp = client.get(format!("{}/health", BASE_URL)).send().await.unwrap();
+    
+    // Health endpoint should return 200 or 503 depending on NetBox connectivity
+    assert!(resp.status() == 200 || resp.status() == 503);
+    
+    let body: serde_json::Value = resp.json().await.unwrap();
+    assert_eq!(body["service"], "NetGate");
+    assert_eq!(body["version"], "1.0.0");
+    assert!(body["status"].is_string());
+    assert!(body["timestamp"].is_string());
+    
+    // NetBox health should be present (may be connected or disconnected)
+    if let Some(netbox) = body.get("netbox") {
+        assert!(netbox["connected"].is_boolean());
+    }
+    
+    // Circuit breaker health should be present
+    if let Some(cb) = body.get("circuit_breaker") {
+        assert!(cb["state"].is_string());
+        assert!(cb["failure_count"].is_number());
+    }
+}
+
+#[tokio::test]
+#[ignore]
+async fn test_metrics_endpoint() {
+    let client = reqwest::Client::new();
+    let resp = client.get(format!("{}/metrics", BASE_URL)).send().await.unwrap();
+    
     assert_eq!(resp.status(), 200);
+    let body: serde_json::Value = resp.json().await.unwrap();
+    
+    assert!(body["timestamp"].is_string());
+    
+    // NetBox metrics should be present
+    if let Some(netbox) = body.get("netbox") {
+        assert!(netbox["total_requests"].is_number());
+        assert!(netbox["successful_requests"].is_number());
+        assert!(netbox["failed_requests"].is_number());
+        assert!(netbox["success_rate"].is_number());
+        assert!(netbox["failure_rate"].is_number());
+        assert!(netbox["average_response_time_ms"].is_number());
+        assert!(netbox["total_retries"].is_number());
+        assert!(netbox["circuit_breaker_rejections"].is_number());
+        assert!(netbox["circuit_breaker_state"].is_string());
+    }
 }
 
 #[tokio::test]

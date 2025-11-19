@@ -217,6 +217,11 @@ impl ResilientNetBoxClient {
         self.circuit_breaker.state()
     }
 
+    /// Get circuit breaker failure count
+    pub fn circuit_breaker_failure_count(&self) -> u32 {
+        self.circuit_breaker.failure_count()
+    }
+
     /// Clear cache
     pub fn clear_cache(&self) {
         self.cache.clear_all();

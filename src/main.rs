@@ -5,6 +5,7 @@ mod domain;
 mod error;
 mod logging;
 mod netbox;
+mod observability;
 mod resilience;
 mod security;
 
@@ -13,7 +14,7 @@ use std::sync::Arc;
 use poem::listener::TcpListener;
 use poem_openapi::OpenApiService;
 
-use crate::api::{HealthApi, OrdersApi, TenantsApi};
+use crate::api::{HealthApi, MetricsApi, OrdersApi, TenantsApi};
 use crate::business::{OrderService, WorkflowManager};
 use crate::config::Config;
 use crate::domain::tenant::TenantStore;
@@ -39,6 +40,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize workflow manager
     let workflow_manager = Arc::new(WorkflowManager::new());
     
+    // Clone resilient client for APIs before moving it to order service
+    let resilient_netbox_client_for_apis = resilient_netbox_client.clone();
+    
     // Initialize order service
     let order_service = Arc::new(OrderService::new(
         workflow_manager,
@@ -49,12 +53,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let store = Arc::new(TenantStore::new());
     
     // Initialize APIs
-    let health_api = HealthApi;
+    let health_api = HealthApi::with_netbox_client(resilient_netbox_client_for_apis.clone());
+    let metrics_api = MetricsApi::with_netbox_client(resilient_netbox_client_for_apis);
     let orders_api = OrdersApi::new(order_service);
     let tenants_api = TenantsApi::new(store);
     
     let api_service = OpenApiService::new(
-        (health_api, orders_api, tenants_api),
+        (health_api, metrics_api, orders_api, tenants_api),
         "NetGate API",
         "1.0",
     )
