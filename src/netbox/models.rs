@@ -35,7 +35,7 @@ pub struct NetBoxSite {
 }
 
 /// NetBox Site Status
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SiteStatus {
     Active,
