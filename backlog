@@ -1,0 +1,64 @@
+
+Critical gaps (must-have)
+NetBox integration
+Connect to NetBox API (not just a placeholder)
+CRUD operations for NetBox resources (sites, devices, etc.)
+Handle NetBox authentication and API responses
+Business rules engine
+Order validation logic
+Transformation rules (order → NetBox resource mapping)
+Workflow/state management for orders
+Object enrichment
+Add computed/derived fields to NetBox objects
+Merge data from multiple sources
+Add metadata/tags based on business logic
+Virtual object mapping
+Abstraction layer over NetBox resources
+Virtual resources that don't exist in NetBox
+Mapping between virtual and physical NetBox objects
+Important enhancements (should-have)
+Advanced tenant separation
+Tenant-specific NetBox filtering
+Tenant-scoped resource visibility
+Tenant-based access control
+Error handling and resilience
+Retry logic for NetBox API calls
+Circuit breaker pattern
+Graceful degradation
+Code quality indicators
+Clean architecture (separation of concerns)
+Dependency injection patterns
+Comprehensive error types
+Logging and observability
+Extensibility
+Plugin/strategy pattern for business rules
+Configuration-driven mappings
+Easy to add new order types
+Nice-to-have (differentiators)
+Advanced features
+Caching layer (Redis/memory)
+Async job processing for long operations
+Webhook support for NetBox events
+Batch operations
+Documentation
+Architecture diagrams
+API documentation completeness
+Code comments explaining design decisions
+Testing
+Integration tests with mock NetBox server
+Performance tests
+Load testing
+Priority order
+NetBox integration (real API calls)
+Business rules implementation (order → NetBox transformation)
+Object enrichment (add computed fields)
+Virtual object mapping (abstraction layer)
+Advanced tenant separation (NetBox-level filtering)
+Error handling and resilience patterns
+Focus on demonstrating that you can:
+Work with async Rust (tokio) at scale
+Design middleware architecture
+Implement business logic transformations
+Handle real-world API integration challenges
+Write maintainable, extensible code
+The current MVP shows the foundation; adding these will demonstrate production-ready capabilities.

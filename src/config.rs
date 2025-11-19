@@ -39,6 +39,11 @@ mod tests {
 
     #[test]
     fn test_config_from_env() {
+        // Save original values
+        let orig_port = std::env::var("PORT").ok();
+        let orig_url = std::env::var("NETBOX_URL").ok();
+        let orig_token = std::env::var("NETBOX_TOKEN").ok();
+
         std::env::set_var("PORT", "9090");
         std::env::set_var("NETBOX_URL", "http://netbox.example.com");
         std::env::set_var("NETBOX_TOKEN", "test-token");
@@ -49,10 +54,22 @@ mod tests {
         assert_eq!(config.netbox_url, "http://netbox.example.com");
         assert_eq!(config.netbox_token, "test-token");
 
-        // Cleanup
-        std::env::remove_var("PORT");
-        std::env::remove_var("NETBOX_URL");
-        std::env::remove_var("NETBOX_TOKEN");
+        // Restore original values
+        if let Some(val) = orig_port {
+            std::env::set_var("PORT", val);
+        } else {
+            std::env::remove_var("PORT");
+        }
+        if let Some(val) = orig_url {
+            std::env::set_var("NETBOX_URL", val);
+        } else {
+            std::env::remove_var("NETBOX_URL");
+        }
+        if let Some(val) = orig_token {
+            std::env::set_var("NETBOX_TOKEN", val);
+        } else {
+            std::env::remove_var("NETBOX_TOKEN");
+        }
     }
 
     #[test]
